@@ -12,10 +12,14 @@
     <div id="app">
       <div class="nav-bar"></div>
 
+      <div class="cart">Cart({{ cart }})</div>
+
       <div class="product-display">
         <div class="product-container">
           <div class="product-image">
-            <img v-bind:src="image">
+            <img 
+              v-bind:src="image"
+              :class="{ 'out-of-stock-img': !inStock }">
             <a :href="url">LINK</a> 
           </div>
           <div class="product-info">
@@ -27,6 +31,33 @@
             <ul>
               <li v-for="detail in details">{{ detail }}</li>
             </ul>
+            
+            <div 
+              v-for="variant in variants" 
+              :key="variant.id" 
+              @mouseover="updateImage(variant.image)"
+              class="color-circle"
+              :style="{ backgroundColor: variant.color }">
+            </div>
+            
+            <div 
+              v-for="size in sizes">
+              {{ size }}
+            </div>
+            
+            <button 
+              class="button" 
+              v-on:click="addToCart"
+              :class="{ disabledButton: !inStock }"
+              :disabled="!inStock">
+              Add to Cart
+            </button>
+            
+            <button 
+              class="button" 
+              v-on:click="removeFromCart">
+              Remove from Cart
+            </button>
           </div>
         </div>
       </div>
